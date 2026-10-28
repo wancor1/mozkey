@@ -333,6 +333,26 @@ TEST_F(TableTest, InvalidEntryTest) {
   }
 }
 
+TEST_F(TableTest, BulkKanaEntriesWithLongPending) {
+  const absl::string_view kana[] = {
+      "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
+      "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
+      "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
+      "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り",
+      "る", "れ", "ろ", "わ", "を", "ん",
+  };
+  {
+    Table table;
+    const std::string pending(4096, 'a');
+    for (const absl::string_view k : kana) {
+      EXPECT_NE(table.AddRule(k, k, pending), nullptr) << k;
+    }
+    for (const absl::string_view k : kana) {
+      EXPECT_EQ(GetResult(table, k), k) << k;
+    }
+  }
+}
+
 TEST_F(TableTest, CustomPunctuationSymbolAttributesSurviveOverrides) {
   // A short rule can coexist with longer prefix-matching rules.  Rewriting
   // punctuation/symbol output must not discard DisplayAmbiguousResult.
