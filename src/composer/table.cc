@@ -381,8 +381,8 @@ const Entry* absl_nullable Table::AddRuleWithAttributes(
                           NO_TABLE_ATTRIBUTE);
   }
 
-  constexpr size_t kMaxInputOrPendingSize = 300;
-  constexpr size_t kMaxOutputSize = 1024;
+  constexpr size_t kMaxInputOrPendingSize = 65536;
+  constexpr size_t kMaxOutputSize = 65536;
   if (escaped_input.size() >= kMaxInputOrPendingSize ||
       output.size() >= kMaxOutputSize ||
       escaped_pending.size() >= kMaxInputOrPendingSize) {
